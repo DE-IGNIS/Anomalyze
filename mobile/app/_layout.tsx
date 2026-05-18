@@ -8,7 +8,7 @@ export default function RootLayout() {
       <Stack
         screenOptions={{
           headerShown: true,
-          headerTitle: "UseBy",
+          headerTitle: "Anomalyze",
           headerTitleAlign: "center",
 
           headerStyle: {
