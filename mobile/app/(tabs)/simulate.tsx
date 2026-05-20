@@ -125,8 +125,8 @@ export default function Simulate() {
   const deviceOptions = [
     "iPhone 15 Pro (Primary)",
     "Samsung s25",
-    "",
-    "Linux Terminal",
+    "One Plus Nord5",
+    "Vivo V20",
   ];
 
   return (
