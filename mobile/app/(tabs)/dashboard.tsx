@@ -244,14 +244,14 @@ export default function Dashboard() {
         showsVerticalScrollIndicator={false}
       >
         {/* ── Header ── */}
-        <View style={s.header}>
+        {/* <View style={s.header}>
           <View style={s.brand}>
             <View style={s.brandIcon}>
               <View style={s.brandDot} />
             </View>
             <Text style={s.brandName}>SafeTransact</Text>
           </View>
-        </View>
+        </View> */}
 
         {/* ── Stats (STACKED) ── */}
         <View style={s.statsColumn}>
