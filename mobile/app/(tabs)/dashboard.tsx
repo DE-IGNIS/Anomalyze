@@ -290,7 +290,8 @@ export default function Dashboard() {
 const s = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: C.bg,
+    // backgroundColor: C.bg,
+    backgroundColor: "#0A0E17",
   },
   scroll: {
     flex: 1,
