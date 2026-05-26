@@ -134,7 +134,8 @@ export default function Simulate() {
       {/* Header */}
       <Text style={styles.title}>Transaction Simulator</Text>
       <Text style={styles.subtitle}>
-        Test security engine response to transaction patterns
+        Configure parameters to test the security engine's response to specific
+        transaction patterns
       </Text>
 
       {/* Glass Card */}
