@@ -6,7 +6,7 @@ import {
 
 const router = express.Router();
 
-router.get('/', getTransactions);
-router.post('/', addTransaction);
+router.get('/getTransactions', getTransactions);
+router.post('/addTransactions', addTransaction);
 
 export default router;
