@@ -4,12 +4,12 @@
 
 <h1 align="center">Anomalyze</h1>
 
-<p align="center">
+<!-- <p align="center">
   <img alt="Top language" src="https://img.shields.io/github/languages/top/{{YOUR_GITHUB_USERNAME}}/anomalyze?color=56BEB8">
   <img alt="Language count" src="https://img.shields.io/github/languages/count/{{YOUR_GITHUB_USERNAME}}/anomalyze?color=56BEB8">
   <img alt="Repo size" src="https://img.shields.io/github/repo-size/{{YOUR_GITHUB_USERNAME}}/anomalyze?color=56BEB8">
   <img alt="License" src="https://img.shields.io/github/license/{{YOUR_GITHUB_USERNAME}}/anomalyze?color=56BEB8">
-</p>
+</p> -->
 
 <p align="center">
   <a href="#dart-about">About</a> • 
@@ -121,7 +121,7 @@ Role-based access control for enterprise usage
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
 ```
-MIT License · Copyright (c) 2026 Krishna Narayan Singh
+MIT License · Copyright (c) 2026 DE-IGNIS
 ```
 
 <div align="center"> Made with ❤️ by <a href="https://github.com/DE-IGNIS" target="_blank">Darsyn</a> </div>
