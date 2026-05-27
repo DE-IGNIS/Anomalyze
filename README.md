@@ -31,7 +31,7 @@
 
 The platform analyzes transactions using predefined and extensible rules, flags anomalies instantly, and presents actionable insights through a clean and intuitive interface.  
 
-It is designed with scalability, clarity, and decision support in mind—making it easier for bank employees to investigate, validate, and act on financial irregularities.
+It is designed with scalability, clarity, and decision support in mind making it easier for bank employees to investigate, validate, and act on financial irregularities.
 
 ---
 
@@ -97,7 +97,7 @@ Before starting, ensure you have the following installed:
 
 ```bash
 # Clone this repository
-git clone https://github.com/{{YOUR_GITHUB_USERNAME}}/anomalyze
+git clone https://github.com/DE-IGNIS/anomalyze
 
 # Navigate into the project
 cd anomalyze
@@ -115,11 +115,15 @@ Fraud risk scoring system
 Real-time alerts and notifications
 Dashboard for analytics and trends
 Role-based access control for enterprise usage
-:memo: License
 
-This project is licensed under the MIT License.
-See the LICENSE file for more details.
+## 📝 License
 
-<div align="center"> Made with ❤️ by <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">{{YOUR_NAME}}</a> </div>
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+```
+MIT License · Copyright (c) 2026 Krishna Narayan Singh
+```
+
+<div align="center"> Made with ❤️ by <a href="https://github.com/DE-IGNIS" target="_blank">Darsyn</a> </div>
 
 <a href="#top">Back to top</a>
