@@ -1,102 +1,5 @@
-// import { useState } from "react";
-// import {
-//   View,
-//   Text,
-//   TextInput,
-//   StyleSheet,
-//   TouchableOpacity,
-// } from "react-native";
-
-// export default function Simulate() {
-//   const [transAmount, setTransAmount] = useState("");
-//   const [merchantType, setMerchantType] = useState("Select Merchant");
-//   const [device, setDevice] = useState("");
-//   const [open, setOpen] = useState(false);
-
-//   const merchantOptions = [
-//     "E-commerce Terminal",
-//     "Demo Terminal 2",
-//     "Demo Terminal 3",
-//   ];
-//   const deviceOptions = [
-//     "iPhone 15 Pro(Primary)",
-//     "Samsung s25",
-//     "Demo Terminal 3",
-//   ];
-
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.title}>This is a Simulate page</Text>
-
-//       <Text>Transaction Simulator</Text>
-//       <Text>
-//         Configure parameters to test the security engine's response to specific
-//         transaction patterns
-//       </Text>
-//       <TextInput
-//         style={styles.input}
-//         value={transAmount}
-//         onChangeText={setTransAmount}
-//         keyboardType="numeric"
-//         placeholder="Enter amount"
-//       />
-
-//       {/* Selecting Merchant type */}
-//       <View style={{ padding: 20 }}>
-//         <Text>Merchant Type</Text>
-//         <TouchableOpacity onPress={() => setOpen(!open)}>
-//           <Text>{merchantType}</Text>
-//         </TouchableOpacity>
-
-//         {open &&
-//           merchantOptions.map((item, index) => (
-//             <TouchableOpacity
-//               key={index}
-//               onPress={() => {
-//                 setMerchantType(item);
-//                 setOpen(false);
-//               }}
-//             >
-//               <Text>{item}</Text>
-//             </TouchableOpacity>
-//           ))}
-//       </View>
-
-//       <TextInput
-//         style={styles.input}
-//         value={merchantType}
-//         onChangeText={setMerchantType}
-//         placeholder="e.g. Grocery"
-//       />
-
-//       <Text>Origin Device</Text>
-//       <TextInput
-//         style={styles.input}
-//         value={device}
-//         onChangeText={setDevice}
-//         placeholder="e.g. Mobile"
-//       />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     padding: 20,
-//   },
-//   title: {
-//     fontSize: 18,
-//     marginBottom: 10,
-//   },
-//   input: {
-//     borderWidth: 1,
-//     borderColor: "#ccc",
-//     padding: 10,
-//     marginBottom: 15,
-//     borderRadius: 5,
-//   },
-// });
 import { useState } from "react";
+import uuid from "react-native-uuid";
 import {
   View,
   Text,
@@ -105,6 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
+import axios from "axios";
 
 export default function Simulate() {
   const [amount, setAmount] = useState("");
@@ -128,6 +32,36 @@ export default function Simulate() {
     "One Plus Nord5",
     "Vivo V20",
   ];
+
+
+  const simulateData = async () => {
+    // let id = 
+
+    const payload = {
+      user_id: uuid.v4(),
+      amount,
+      merchant_type: merchant,
+      device,
+      location: "India"
+    };
+
+    try {
+      const response = await axios.post(
+        "http://192.168.29.224:3000/api/addTransactions/",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Simulation response:", response.data);
+    } catch (error) {
+      console.error("Simulation error:", error.response?.data || error.message);
+    }
+  };
+
 
   return (
     <ScrollView style={styles.container}>
@@ -205,7 +139,7 @@ export default function Simulate() {
 
         {/* CTA */}
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Run Secure Simulation</Text>
+          <Text style={styles.buttonText} onPress={simulateData}>Run Secure Simulation</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
