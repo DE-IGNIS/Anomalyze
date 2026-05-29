@@ -5,9 +5,9 @@
 <h1 align="center">Anomalyze</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/github/stars/USERNAME/REPO">
-  <img src="https://img.shields.io/github/forks/USERNAME/REPO">
-  <img src="https://img.shields.io/github/issues/USERNAME/REPO">
+  <img src="https://img.shields.io/github/stars/DE-IGNIS/Anomalyze">
+  <img src="https://img.shields.io/github/forks/DE-IGNIS/Anomalyze">
+  <img src="https://img.shields.io/github/issues/DE-IGNIS/Anomalyze">
   <img alt="License" src="https://img.shields.io/github/license/{{DARSYN}}/anomalyze?color=56BEB8">
 </p>
 
