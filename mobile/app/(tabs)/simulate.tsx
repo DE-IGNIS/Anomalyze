@@ -14,7 +14,6 @@ export default function Simulate() {
   const [amount, setAmount] = useState("");
   const [merchant, setMerchant] = useState("Select Merchant");
   const [device, setDevice] = useState("Select Device");
-
   const [openMerchant, setOpenMerchant] = useState(false);
   const [openDevice, setOpenDevice] = useState(false);
 
@@ -27,16 +26,15 @@ export default function Simulate() {
   ];
 
   const deviceOptions = [
-    "iPhone 15 Pro (Primary)",
+    "iPhone 15 Pro",
     "Samsung s25",
     "One Plus Nord5",
     "Vivo V20",
+    , "Redmi Note 15"
   ];
 
 
   const simulateData = async () => {
-    // let id = 
-
     const payload = {
       user_id: uuid.v4(),
       amount,
@@ -56,7 +54,7 @@ export default function Simulate() {
         }
       );
 
-      console.log("Simulation response:", response.data);
+      console.log("SUCCESS: Transaction data processed successfully");
     } catch (error) {
       console.error("Simulation error:", error.response?.data || error.message);
     }
@@ -137,7 +135,6 @@ export default function Simulate() {
             </TouchableOpacity>
           ))}
 
-        {/* CTA */}
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText} onPress={simulateData}>Run Secure Simulation</Text>
         </TouchableOpacity>
@@ -166,9 +163,9 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
 
-  /* Glass Card */
+  /* Glass Simulation Card */
   card: {
-    backgroundColor: "rgba(31,41,55,0.6)", // glass feel
+    backgroundColor: "rgba(31,41,55,0.6)",
     borderRadius: 8,
     padding: 16,
     borderWidth: 1,
@@ -217,7 +214,7 @@ const styles = StyleSheet.create({
 
   button: {
     marginTop: 24,
-    backgroundColor: "#10B981", // success green
+    backgroundColor: "#10B981",
     padding: 14,
     borderRadius: 4,
     alignItems: "center",
