@@ -1,224 +1,3 @@
-// import { useEffect, useState } from "react";
-// import {
-//   View,
-//   Text,
-//   FlatList,
-//   ActivityIndicator,
-//   TouchableOpacity,
-// } from "react-native";
-
-// import { StyleSheet } from "react-native";
-
-// // Define the Transaction type
-// interface Transaction {
-//   id: string | number;
-//   status: "FLAGGED" | "WARNING" | "APPROVED";
-//   merchant_type: string;
-//   amount: number;
-// }
-
-// // Create status style function outside of styles object
-// const statusStyle = (status: "FLAGGED" | "WARNING" | "APPROVED") => ({
-//   fontWeight: "bold" as const,
-//   color:
-//     status === "FLAGGED" ? "red" :
-//     status === "WARNING" ? "orange" :
-//     "green"
-// });
-
-// function History() {
-//   const [transactions, setTransactions] = useState<Transaction[]>([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState<string | null>(null);
-//   const [page, setPage] = useState(1);
-
-//   useEffect(() => {
-//     const fetchTransactions = async () => {
-//       try {
-//         setLoading(true);
-//         setError(null);
-
-//         // fetching paginated transactions from backend
-//         const res = await fetch(
-//           `http://192.168.29.224:3000/api/getTransactions?page=${page}`,
-//         );
-
-//         if (!res.ok) {
-//           throw new Error(`HTTP error! status: ${res.status}`);
-//         }
-
-//         const data = await res.json();
-
-//         // setting fetched data
-//         setTransactions(data);
-//       } catch (err: any) {
-//         setError(err.message);
-//         console.error("Fetch error:", err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchTransactions();
-
-//     // ❗ IMPORTANT: page added as dependency so data refetches on page change
-//   }, [page]);
-
-//   // loading state UI
-//   if (loading) {
-//     return (
-//       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-//         <ActivityIndicator size="large" color="#0000ff" />
-//         <Text>Loading transactions...</Text>
-//       </View>
-//     );
-//   }
-
-//   // error state UI
-//   if (error) {
-//     return (
-//       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-//         <Text>Error: {error}</Text>
-//       </View>
-//     );
-//   }
-
-//   // ❌ this was incorrectly placed outside styles, moved inside StyleSheet
-//   /*
-//   status: (status) => ({
-//     color:
-//       status === "FLAGGED" ? "red" :
-//       status === "WARNING" ? "orange" :
-//       "green"
-//   })
-//   */
-
-//   return (
-//     <View style={{ flex: 1 }}>
-//       <Text>This is the history page</Text>
-
-//       {/* ❌ ScrollView not needed with FlatList (causes performance issues) */}
-//       {/* Keeping it commented as requested */}
-//       {/*
-//       <ScrollView>
-//       */}
-
-//       {/* OLD IMPLEMENTATION (kept as requested) */}
-//       {/*
-//       <FlatList
-//         data={transactions}
-//         renderItem={({ item }) => <ItemCard {...item} />}
-//         keyExtractor={(item) => item.id.toString()}
-//         numColumns={1}
-//         scrollEnabled={false}
-//         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-//       />
-//       */}
-
-//       {/* NEW TABLE-LIKE LIST */}
-//       <FlatList
-//         data={transactions}
-//         keyExtractor={(item) => item.id.toString()}
-//         renderItem={({ item }: { item: Transaction }) => (
-//           <View style={styles.row}>
-
-//             {/* STATUS COLUMN */}
-//             <Text style={statusStyle(item.status)}>
-//               {item.status}
-//             </Text>
-
-//             {/* TRANSACTION COLUMN */}
-//             <View>
-//               <Text style={styles.merchant}>{item.merchant_type}</Text>
-
-//               {/* showing shortened transaction id */}
-//               <Text style={styles.txnId}>
-//                 {item.id.toString().slice(0, 8)}
-//               </Text>
-//             </View>
-
-//             {/* AMOUNT COLUMN */}
-//             <Text style={styles.amount}>
-//               Rs {item.amount}
-//             </Text>
-
-//           </View>
-//         )}
-//       />
-
-//       {/* </ScrollView> */}
-
-//       {/* PAGINATION */}
-//       <View style={styles.pagination}>
-//         {[1,2,3,4,5].map(p => (
-//           <TouchableOpacity
-//             key={p}
-//             onPress={() => setPage(p)}
-//             style={[
-//               styles.pageButton,
-//               page === p && styles.activePage
-//             ]}
-//           >
-//             <Text style={styles.pageText}>{p}</Text>
-//           </TouchableOpacity>
-//         ))}
-//       </View>
-
-//     </View>
-//   );
-// }
-
-// export default History;
-
-// // ✅ STYLES
-// const styles = StyleSheet.create({
-//   row: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     alignItems: "center",
-//     padding: 12,
-//     borderBottomWidth: 1,
-//     borderColor: "#ddd"
-//   },
-
-//   merchant: {
-//     fontSize: 16,
-//     fontWeight: "600"
-//   },
-
-//   txnId: {
-//     fontSize: 12,
-//     color: "gray"
-//   },
-
-//   amount: {
-//     fontSize: 16,
-//     fontWeight: "bold"
-//   },
-
-//   pagination: {
-//     flexDirection: "row",
-//     justifyContent: "center",
-//     marginVertical: 10
-//   },
-
-//   pageButton: {
-//     padding: 8,
-//     marginHorizontal: 4,
-//     borderWidth: 1,
-//     borderColor: "#ccc",
-//     borderRadius: 5
-//   },
-
-//   activePage: {
-//     backgroundColor: "#4CAF50"
-//   },
-
-//   pageText: {
-//     fontSize: 14
-//   }
-// });
-
 import { useEffect, useState } from "react";
 import {
   View,
@@ -229,9 +8,10 @@ import {
   TextInput,
   StyleSheet,
   StatusBar,
-  SafeAreaView,
   ScrollView,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 
 // ─── Theme ────────────────────────────────────────────────────────────────────
 const COLORS = {
@@ -346,12 +126,12 @@ function SearchBar() {
         showsHorizontalScrollIndicator={false}
         style={s.chipRow}
       > */}
-        {/* <View style={[s.chip, s.chipActive]}>
+      {/* <View style={[s.chip, s.chipActive]}>
           <Text style={[s.chipText, { color: COLORS.secondary }]}>
             RISK: HIGH ✕
           </Text>
         </View> */}
-        {/* <View style={[s.chip, s.chipMuted]}>
+      {/* <View style={[s.chip, s.chipMuted]}>
           <Text style={[s.chipText, { color: COLORS.onSurfaceVariant }]}>
             TYPE: EXTERNAL ✕
           </Text>
