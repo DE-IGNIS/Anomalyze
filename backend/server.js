@@ -4,7 +4,6 @@ import transactionRoutes from './routes/transactionRoutes.js';
 
 const app = express();
 
-
 app.use(cors());
 app.use(express.json());
 

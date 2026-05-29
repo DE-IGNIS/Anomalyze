@@ -14,7 +14,7 @@ export const calculateRisk = ({ amount, device }) => {
 
   let status = "VERIFIED";
 
-  if (risk > 70) status = "FLAGGED";
+  if (risk > 70) status = "ALERT";
   else if (risk > 40) status = "WARNING";
 
   return { risk, status, reason: reason.join(", ") };
