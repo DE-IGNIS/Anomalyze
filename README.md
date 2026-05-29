@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/github/stars/DE-IGNIS/Anomalyze">
   <img src="https://img.shields.io/github/forks/DE-IGNIS/Anomalyze">
   <img src="https://img.shields.io/github/issues/DE-IGNIS/Anomalyze">
-  <img alt="License" src="https://img.shields.io/github/license/{{DARSYN}}/anomalyze?color=56BEB8">
+  <img alt="License" src="https://img.shields.io/github/license/DE-IGNIS/anomalyze?color=56BEB8">
 </p>
 
 <p align="center">
