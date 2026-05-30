@@ -11,6 +11,7 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import SearchBar from "../../components/SearchBar";
 
 
 // ─── Theme ────────────────────────────────────────────────────────────────────
@@ -98,48 +99,48 @@ function Header() {
   );
 }
 
-function SearchBar() {
-  const [query, setQuery] = useState("");
-  return (
-    <View style={s.searchSection}>
-      {/* Search input */}
-      <View style={s.searchRow}>
-        <View style={s.searchInputWrapper}>
-          <Text style={s.searchIcon}>⌕</Text>
-          <TextInput
-            style={s.searchInput}
-            placeholder="Search Transaction ID, Merchant, or IP..."
-            placeholderTextColor={COLORS.outline}
-            value={query}
-            onChangeText={setQuery}
-          />
-        </View>
-        {/* Filter Button  */}
-        {/* <TouchableOpacity style={s.filterBtn}>
-          <Text style={s.filterBtnText}>⊟ Filter</Text>
-        </TouchableOpacity> */}
-      </View>
+// function SearchBar() {
+//   const [query, setQuery] = useState("");
+//   return (
+//     <View style={s.searchSection}>
+//       {/* Search input */}
+//       <View style={s.searchRow}>
+//         <View style={s.searchInputWrapper}>
+//           <Text style={s.searchIcon}>⌕</Text>
+//           <TextInput
+//             style={s.searchInput}
+//             placeholder="Search Transaction ID, Merchant, or IP..."
+//             placeholderTextColor={COLORS.outline}
+//             value={query}
+//             onChangeText={setQuery}
+//           />
+//         </View>
+//         {/* Filter Button  */}
+//         {/* <TouchableOpacity style={s.filterBtn}>
+//           <Text style={s.filterBtnText}>⊟ Filter</Text>
+//         </TouchableOpacity> */}
+//       </View>
 
-      {/* Active filter chips */}
-      {/* <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={s.chipRow}
-      > */}
-      {/* <View style={[s.chip, s.chipActive]}>
-          <Text style={[s.chipText, { color: COLORS.secondary }]}>
-            RISK: HIGH ✕
-          </Text>
-        </View> */}
-      {/* <View style={[s.chip, s.chipMuted]}>
-          <Text style={[s.chipText, { color: COLORS.onSurfaceVariant }]}>
-            TYPE: EXTERNAL ✕
-          </Text>
-        </View> */}
-      {/* </ScrollView> */}
-    </View>
-  );
-}
+//       {/* Active filter chips */}
+//       {/* <ScrollView
+//         horizontal
+//         showsHorizontalScrollIndicator={false}
+//         style={s.chipRow}
+//       > */}
+//       {/* <View style={[s.chip, s.chipActive]}>
+//           <Text style={[s.chipText, { color: COLORS.secondary }]}>
+//             RISK: HIGH ✕
+//           </Text>
+//         </View> */}
+//       {/* <View style={[s.chip, s.chipMuted]}>
+//           <Text style={[s.chipText, { color: COLORS.onSurfaceVariant }]}>
+//             TYPE: EXTERNAL ✕
+//           </Text>
+//         </View> */}
+//       {/* </ScrollView> */}
+//     </View>
+//   );
+// }
 
 function TableHeader() {
   return (
@@ -341,7 +342,12 @@ function History() {
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={
             <>
-              <SearchBar />
+              <SearchBar
+                placeholder="fsxds"
+                onPress={() => { alert("Pressed") }}
+                value=""
+                onChangeText={() => { }}
+              />
               {/* Transaction table */}
               <View style={s.glassPanel}>
                 <TableHeader />
