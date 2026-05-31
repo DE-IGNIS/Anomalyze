@@ -14,12 +14,12 @@
 <p align="center">
   <a href="#dart-about">About</a> • 
   <a href="#sparkles-features">Features</a> • 
-  <a href="#gear-architecture">Architecture</a> •
-  <a href="#rocket-tech stack">Tech Stack</a> • 
+  <a href="#rocket-tech-stack">Tech Stack</a> • 
   <a href="#white_check_mark-requirements">Requirements</a> • 
-  <a href="#checkered_flag-starting">Getting Started</a> • 
-  <a href="#chart-future-scope">Future Scope</a> •
-  <a href="#memo-license">License</a>
+  <a href="#-installation--setup">Getting Started</a> • 
+  <a href="#gear-architecture">Architecture</a> •
+  <a href="#chart_with_upwards_trend-future-scope">Future Scope</a> •
+  <a href="#-license">License</a>
 </p>
 
 ---
