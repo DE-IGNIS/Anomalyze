@@ -5,30 +5,26 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
-  TextInput,
   StyleSheet,
   StatusBar,
-  ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchBar from "../../components/SearchBar";
 
-
 // ─── Theme ────────────────────────────────────────────────────────────────────
 const COLORS = {
-  background: "#091421",
-  surface: "#091421",
+  background: "#0A0E17",
+  surface: "#111722",
   surfaceContainer: "#16202e",
-  surfaceContainerHigh: "#212b39",
+  surfaceContainerHigh: "#1e2a3a",
   surfaceVariant: "#2b3544",
   outlineVariant: "#45464b",
-  outline: "#909096",
+  outline: "#5a6a82",
+  outlineSoft: "#8898aa",
   onSurface: "#d9e3f6",
-  onSurfaceVariant: "#c6c6cc",
   secondary: "#4edea3",
-  secondaryContainer: "#00a572",
   onSecondary: "#003824",
-  error: "#ffb4ab",
+  error: "#ff8fa3",
   tertiary: "#adc6ff",
   white5: "rgba(255,255,255,0.05)",
   white10: "rgba(255,255,255,0.10)",
@@ -43,9 +39,9 @@ interface Transaction {
   merchant_type: string;
   amount: number;
   time?: string;
-  ip?: string;
-  location?: string;
 }
+
+const PAGE_SIZE = 5;
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const statusConfig = (status: TxStatus) => {
@@ -53,7 +49,7 @@ const statusConfig = (status: TxStatus) => {
     case "FLAGGED":
       return {
         bar: COLORS.error,
-        badge: "rgba(255,180,171,0.10)",
+        badge: "rgba(255,143,163,0.10)",
         text: COLORS.error,
         label: "Flagged",
       };
@@ -77,80 +73,12 @@ const statusConfig = (status: TxStatus) => {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function Header() {
-  return (
-    <View style={s.header}>
-      <View style={s.headerLeft}>
-        {/* shield icon approximated with a simple box */}
-        <View style={s.iconBox}>
-          <Text style={s.iconText}>🛡</Text>
-        </View>
-        <Text style={s.appName}>SafeTransact</Text>
-      </View>
-      <View style={s.headerRight}>
-        <TouchableOpacity style={s.iconBtn}>
-          <Text style={s.iconBtnText}>⌕</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={s.iconBtn}>
-          <Text style={s.iconBtnText}>◯</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-}
-
-// function SearchBar() {
-//   const [query, setQuery] = useState("");
-//   return (
-//     <View style={s.searchSection}>
-//       {/* Search input */}
-//       <View style={s.searchRow}>
-//         <View style={s.searchInputWrapper}>
-//           <Text style={s.searchIcon}>⌕</Text>
-//           <TextInput
-//             style={s.searchInput}
-//             placeholder="Search Transaction ID, Merchant, or IP..."
-//             placeholderTextColor={COLORS.outline}
-//             value={query}
-//             onChangeText={setQuery}
-//           />
-//         </View>
-//         {/* Filter Button  */}
-//         {/* <TouchableOpacity style={s.filterBtn}>
-//           <Text style={s.filterBtnText}>⊟ Filter</Text>
-//         </TouchableOpacity> */}
-//       </View>
-
-//       {/* Active filter chips */}
-//       {/* <ScrollView
-//         horizontal
-//         showsHorizontalScrollIndicator={false}
-//         style={s.chipRow}
-//       > */}
-//       {/* <View style={[s.chip, s.chipActive]}>
-//           <Text style={[s.chipText, { color: COLORS.secondary }]}>
-//             RISK: HIGH ✕
-//           </Text>
-//         </View> */}
-//       {/* <View style={[s.chip, s.chipMuted]}>
-//           <Text style={[s.chipText, { color: COLORS.onSurfaceVariant }]}>
-//             TYPE: EXTERNAL ✕
-//           </Text>
-//         </View> */}
-//       {/* </ScrollView> */}
-//     </View>
-//   );
-// }
-
 function TableHeader() {
   return (
     <View style={s.tableHeader}>
       <Text style={[s.colLabel, { flex: 1.4 }]}>STATUS</Text>
       <Text style={[s.colLabel, { flex: 2 }]}>TRANSACTION</Text>
-      <Text style={[s.colLabel, { flex: 1.2, textAlign: "right" }]}>
-        AMOUNT
-      </Text>
-      <View style={{ width: 24 }} />
+      <Text style={[s.colLabel, { flex: 1.2, textAlign: "right" }]}>AMOUNT</Text>
     </View>
   );
 }
@@ -159,39 +87,30 @@ function TransactionRow({ item }: { item: Transaction }) {
   const cfg = statusConfig(item.status);
   return (
     <TouchableOpacity activeOpacity={0.7} style={s.row}>
-      {/* Status column */}
+      {/* Status */}
       <View style={[s.rowCell, { flex: 1.4 }]}>
         <View style={s.statusCol}>
           <View style={[s.statusBar, { backgroundColor: cfg.bar }]} />
           <View>
             <View style={[s.badge, { backgroundColor: cfg.badge }]}>
-              <Text style={[s.badgeText, { color: cfg.text }]}>
-                {cfg.label}
-              </Text>
+              <Text style={[s.badgeText, { color: cfg.text }]}>{cfg.label}</Text>
             </View>
             <Text style={s.timeText}>{item.time ?? "—"}</Text>
           </View>
         </View>
       </View>
 
-      {/* Merchant column */}
+      {/* Merchant */}
       <View style={[s.rowCell, { flex: 2 }]}>
         <Text style={s.merchantName} numberOfLines={1}>
           {item.merchant_type}
         </Text>
-        <Text style={s.txnId}>
-          {item.id.toString().slice(0, 12).toUpperCase()}
-        </Text>
+        <Text style={s.txnId}>{item.id.toString().slice(0, 12).toUpperCase()}</Text>
       </View>
 
-      {/* Amount column */}
+      {/* Amount */}
       <View style={[s.rowCell, { flex: 1.2, alignItems: "flex-end" }]}>
         <Text style={s.amount}>₹{item.amount.toLocaleString("en-IN")}</Text>
-      </View>
-
-      {/* Arrow */}
-      <View style={{ width: 24, alignItems: "center" }}>
-        <Text style={s.arrow}>›</Text>
       </View>
     </TouchableOpacity>
   );
@@ -199,14 +118,19 @@ function TransactionRow({ item }: { item: Transaction }) {
 
 function Pagination({
   page,
+  totalPages,
   setPage,
 }: {
   page: number;
+  totalPages: number;
   setPage: (p: number) => void;
 }) {
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   return (
     <View style={s.paginationBar}>
-      <Text style={s.paginationInfo}>Showing page {page}</Text>
+      <Text style={s.paginationInfo}>
+        Page {page} of {totalPages}
+      </Text>
       <View style={s.paginationBtns}>
         <TouchableOpacity
           style={s.pageBtn}
@@ -214,7 +138,7 @@ function Pagination({
         >
           <Text style={s.pageBtnText}>‹</Text>
         </TouchableOpacity>
-        {[1, 2, 3, 4, 5].map((p) => (
+        {pages.map((p) => (
           <TouchableOpacity
             key={p}
             style={[s.pageBtn, page === p && s.pageBtnActive]}
@@ -225,67 +149,13 @@ function Pagination({
             </Text>
           </TouchableOpacity>
         ))}
-        <TouchableOpacity style={s.pageBtn} onPress={() => setPage(page + 1)}>
+        <TouchableOpacity
+          style={s.pageBtn}
+          onPress={() => setPage(Math.min(totalPages, page + 1))}
+        >
           <Text style={s.pageBtnText}>›</Text>
         </TouchableOpacity>
       </View>
-    </View>
-  );
-}
-
-function InsightCard() {
-  return (
-    <View style={s.insightRow}>
-      {/* Analytics card */}
-      <View style={[s.glassPanel, s.analyticsCard]}>
-        <Text style={s.analyticsTitle}>Security Analytics</Text>
-        <Text style={s.analyticsBody}>
-          Unusual activity detected from 3 new IP addresses in the South East
-          Asia region. Immediate verification recommended.
-        </Text>
-        <TouchableOpacity style={s.analyticsBtn}>
-          <Text style={s.analyticsBtnText}>View Threat Map</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Network health card */}
-      <View style={[s.glassPanel, s.healthCard]}>
-        <Text style={s.healthIcon}>✔</Text>
-        <Text style={s.healthLabel}>NETWORK HEALTH</Text>
-        <Text style={s.healthValue}>99.98%</Text>
-        <View style={s.healthBarBg}>
-          <View style={s.healthBarFill} />
-        </View>
-      </View>
-    </View>
-  );
-}
-
-// ─── Bottom Nav ───────────────────────────────────────────────────────────────
-function BottomNav() {
-  const items = [
-    { icon: "⊞", label: "Dashboard" },
-    { icon: "⚠", label: "Anomalies" },
-    { icon: "⚗", label: "Simulate" },
-    { icon: "⏱", label: "History", active: true },
-  ];
-  return (
-    <View style={s.bottomNav}>
-      {items.map((item) => (
-        <TouchableOpacity
-          key={item.label}
-          style={[s.navItem, item.active && s.navItemActive]}
-        >
-          <Text style={[s.navIcon, item.active && { color: COLORS.secondary }]}>
-            {item.icon}
-          </Text>
-          <Text
-            style={[s.navLabel, item.active && { color: COLORS.secondary }]}
-          >
-            {item.label}
-          </Text>
-        </TouchableOpacity>
-      ))}
     </View>
   );
 }
@@ -296,6 +166,7 @@ function History() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -303,11 +174,18 @@ function History() {
         setLoading(true);
         setError(null);
         const res = await fetch(
-          `http://192.168.29.224:3000/api/getTransactions?page=${page}`,
+          `http://192.168.29.224:3000/api/getTransactions?page=${page}&limit=${PAGE_SIZE}`
         );
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const data = await res.json();
-        setTransactions(data);
+        const json = await res.json();
+        // Expects { data: Transaction[], total: number } or plain Transaction[]
+        if (Array.isArray(json)) {
+          setTransactions(json);
+          setTotalPages(Math.ceil(json.length / PAGE_SIZE) || 1);
+        } else {
+          setTransactions(json.data ?? []);
+          setTotalPages(Math.ceil((json.total ?? json.data?.length ?? 0) / PAGE_SIZE) || 1);
+        }
       } catch (err: any) {
         setError(err.message);
         console.error("Fetch error:", err);
@@ -318,15 +196,16 @@ function History() {
     fetchTransactions();
   }, [page]);
 
+  const visibleRows = transactions.slice(0, PAGE_SIZE);
+
   return (
     <SafeAreaView style={s.screen}>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
-      {/* <Header /> */}
 
       {loading ? (
         <View style={s.centered}>
           <ActivityIndicator size="large" color={COLORS.secondary} />
-          <Text style={s.loadingText}>Loading transactions...</Text>
+          <Text style={s.loadingText}>Loading transactions…</Text>
         </View>
       ) : error ? (
         <View style={s.centered}>
@@ -336,51 +215,47 @@ function History() {
         </View>
       ) : (
         <FlatList
-          data={transactions}
-          keyExtractor={(item) => item.id.toString()}
+          data={[1]} // single-item trick to use FlatList scroll with header/footer
+          keyExtractor={() => "table"}
           contentContainerStyle={s.listContent}
           showsVerticalScrollIndicator={false}
+          renderItem={() => (
+            <View style={s.tablePanel}>
+              <TableHeader />
+              <View style={s.divider} />
+              {visibleRows.map((item, index) => (
+                <View key={item.id.toString()}>
+                  <TransactionRow item={item} />
+                  {index < visibleRows.length - 1 && (
+                    <View style={s.divider} />
+                  )}
+                </View>
+              ))}
+            </View>
+          )}
           ListHeaderComponent={
             <>
               <SearchBar
-                placeholder="fsxds"
-                onPress={() => { alert("Pressed") }}
+                placeholder="Search merchant, ID or amount…"
+                onPress={() => {}}
                 value=""
-                onChangeText={() => { }}
+                onChangeText={() => {}}
               />
-              {/* Transaction table */}
-              <View style={s.glassPanel}>
-                <TableHeader />
-                <View style={s.divider} />
-              </View>
+              <View style={{ height: 20 }} />
             </>
           }
-          renderItem={({ item, index }) => (
-            <View
-              style={[
-                s.glassPanel,
-                {
-                  marginTop: index === 0 ? 0 : 0,
-                  borderTopWidth: index === 0 ? 0 : 1,
-                  borderTopColor: COLORS.white5,
-                },
-              ]}
-            >
-              <TransactionRow item={item} />
-            </View>
-          )}
-          ItemSeparatorComponent={() => <View style={{ height: 0 }} />}
           ListFooterComponent={
             <>
-              <Pagination page={page} setPage={setPage} />
-              {/* <InsightCard /> */}
-              <View style={{ height: 90 }} />
+              <Pagination
+                page={page}
+                totalPages={totalPages}
+                setPage={setPage}
+              />
+              <View style={{ height: 40 }} />
             </>
           }
         />
       )}
-
-      {/* <BottomNav /> */}
     </SafeAreaView>
   );
 }
@@ -391,164 +266,97 @@ export default History;
 const s = StyleSheet.create({
   screen: {
     flex: 1,
-    // backgroundColor: COLORS.background,
-    backgroundColor: "#0A0E17",
+    backgroundColor: COLORS.background,
   },
 
-  // ── Header
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  listContent: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: "rgba(9,20,33,0.85)",
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.white10,
-  },
-  headerLeft: { flexDirection: "row", alignItems: "center", gap: 8 },
-  iconBox: { marginRight: 4 },
-  iconText: { fontSize: 18 },
-  appName: {
-    fontFamily: "System",
-    fontSize: 20,
-    fontWeight: "700",
-    color: COLORS.secondary,
-    letterSpacing: -0.4,
-  },
-  headerRight: { flexDirection: "row", gap: 4 },
-  iconBtn: {
-    padding: 8,
-    borderRadius: 20,
-  },
-  iconBtnText: { fontSize: 20, color: COLORS.onSurface },
-
-  // ── Search
-  searchSection: { paddingHorizontal: 16, paddingTop: 16, gap: 10 },
-  searchRow: { flexDirection: "row", gap: 8 },
-  searchInputWrapper: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: COLORS.surfaceContainer,
-    borderWidth: 1,
-    borderColor: COLORS.outlineVariant,
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    gap: 8,
-  },
-  searchIcon: { fontSize: 18, color: COLORS.outline },
-  searchInput: {
-    flex: 1,
-    fontSize: 14,
-    color: COLORS.onSurface,
-    fontFamily: "System",
-  },
-  filterBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: COLORS.surfaceContainer,
-    borderWidth: 1,
-    borderColor: COLORS.outlineVariant,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-  },
-  filterBtnText: { fontSize: 13, color: COLORS.onSurface },
-  chipRow: { flexDirection: "row", marginTop: 2 },
-  chip: {
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    marginRight: 8,
-    borderWidth: 1,
-  },
-  chipActive: {
-    backgroundColor: "rgba(78,222,163,0.08)",
-    borderColor: "rgba(78,222,163,0.2)",
-  },
-  chipMuted: {
-    backgroundColor: COLORS.surfaceVariant,
-    borderColor: "transparent",
-  },
-  chipText: {
-    fontSize: 10,
-    fontWeight: "700",
-    letterSpacing: 1.5,
-    fontFamily: "System",
+    paddingTop: 20,
+    gap: 0,
   },
 
-  // ── Table / List
-  listContent: { paddingHorizontal: 16, paddingTop: 16, gap: 0 },
-  glassPanel: {
-    backgroundColor: "rgba(43,53,68,0.40)",
+  // ── Table
+  tablePanel: {
+    backgroundColor: "rgba(17,23,34,0.95)",
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.05)",
+    borderColor: COLORS.white5,
     borderRadius: 12,
     overflow: "hidden",
   },
   tableHeader: {
     flexDirection: "row",
     paddingHorizontal: 14,
-    paddingVertical: 12,
-    backgroundColor: "rgba(33,43,57,0.5)",
+    paddingVertical: 11,
+    backgroundColor: COLORS.surfaceContainer,
     alignItems: "center",
   },
   colLabel: {
-    fontSize: 10,
+    fontSize: 9,
     fontWeight: "700",
-    letterSpacing: 1.5,
+    letterSpacing: 1.8,
     color: COLORS.outline,
     textTransform: "uppercase",
   },
-  divider: { height: 1, backgroundColor: COLORS.white5 },
+  divider: {
+    height: 1,
+    backgroundColor: COLORS.white5,
+  },
 
   row: {
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 14,
-    paddingVertical: 14,
+    paddingVertical: 13,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.white5,
   },
   rowCell: { justifyContent: "center" },
 
-  statusCol: { flexDirection: "row", alignItems: "center", gap: 10 },
+  statusCol: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 9,
+  },
   statusBar: {
-    width: 3,
-    height: 42,
-    borderRadius: 4,
+    width: 2,
+    height: 38,
+    borderRadius: 2,
   },
   badge: {
     alignSelf: "flex-start",
-    paddingHorizontal: 8,
+    paddingHorizontal: 7,
     paddingVertical: 3,
     borderRadius: 4,
   },
   badgeText: {
-    fontSize: 9,
+    fontSize: 8,
     fontWeight: "700",
     letterSpacing: 0.8,
     textTransform: "uppercase",
   },
   timeText: {
-    fontSize: 10,
+    fontSize: 9,
     color: COLORS.outline,
     marginTop: 3,
-    letterSpacing: 0.5,
+    letterSpacing: 0.4,
   },
 
-  merchantName: { fontSize: 15, fontWeight: "600", color: COLORS.onSurface },
+  merchantName: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: COLORS.onSurface,
+  },
   txnId: {
-    fontSize: 10,
+    fontSize: 9,
     color: COLORS.outline,
     marginTop: 2,
     letterSpacing: 0.8,
-    fontFamily: "System",
   },
-  amount: { fontSize: 16, fontWeight: "700", color: COLORS.onSurface },
-  arrow: { fontSize: 18, color: COLORS.outline },
+  amount: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: COLORS.onSurface,
+  },
 
   // ── Pagination
   paginationBar: {
@@ -556,130 +364,41 @@ const s = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 14,
-    paddingVertical: 12,
-    backgroundColor: "rgba(33,43,57,0.3)",
-    borderRadius: 12,
-    marginTop: 0,
+    paddingVertical: 10,
+    backgroundColor: COLORS.surface,
+    borderRadius: 10,
+    marginTop: 10,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.05)",
+    borderColor: COLORS.white5,
   },
-  paginationInfo: { fontSize: 10, color: COLORS.outline, letterSpacing: 0.5 },
-  paginationBtns: { flexDirection: "row", gap: 4 },
+  paginationInfo: {
+    fontSize: 10,
+    color: COLORS.outline,
+    letterSpacing: 0.4,
+  },
+  paginationBtns: {
+    flexDirection: "row",
+    gap: 4,
+  },
   pageBtn: {
-    width: 30,
-    height: 30,
+    width: 28,
+    height: 28,
     borderRadius: 6,
-    backgroundColor: COLORS.surfaceVariant,
+    backgroundColor: COLORS.surfaceContainerHigh,
     alignItems: "center",
     justifyContent: "center",
   },
-  pageBtnActive: { backgroundColor: COLORS.secondary },
-  pageBtnText: { fontSize: 12, color: COLORS.outline },
-  pageBtnTextActive: { color: COLORS.onSecondary, fontWeight: "700" },
-
-  // ── Insight cards
-  insightRow: {
-    flexDirection: "row",
-    gap: 12,
-    marginTop: 16,
-  },
-  analyticsCard: {
-    flex: 2,
-    padding: 16,
-  },
-  analyticsTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: COLORS.onSurface,
-    letterSpacing: -0.3,
-    marginBottom: 6,
-  },
-  analyticsBody: {
-    fontSize: 13,
-    color: COLORS.outline,
-    lineHeight: 18,
-    marginBottom: 14,
-  },
-  analyticsBtn: {
-    alignSelf: "flex-start",
+  pageBtnActive: {
     backgroundColor: COLORS.secondary,
-    paddingHorizontal: 18,
-    paddingVertical: 9,
-    borderRadius: 8,
   },
-  analyticsBtnText: {
-    fontSize: 13,
-    fontWeight: "700",
+  pageBtnText: {
+    fontSize: 12,
+    color: COLORS.outlineSoft,
+    fontWeight: "600",
+  },
+  pageBtnTextActive: {
     color: COLORS.onSecondary,
-  },
-  healthCard: {
-    flex: 1,
-    padding: 16,
-    justifyContent: "space-between",
-  },
-  healthIcon: { fontSize: 22, color: COLORS.secondary },
-  healthLabel: {
-    fontSize: 9,
     fontWeight: "700",
-    letterSpacing: 1.5,
-    color: COLORS.outline,
-    textTransform: "uppercase",
-    marginTop: 4,
-  },
-  healthValue: {
-    fontSize: 24,
-    fontWeight: "700",
-    color: COLORS.onSurface,
-    marginTop: 4,
-  },
-  healthBarBg: {
-    height: 6,
-    backgroundColor: COLORS.surfaceContainer,
-    borderRadius: 4,
-    marginTop: 10,
-    overflow: "hidden",
-  },
-  healthBarFill: {
-    height: "100%",
-    width: "99.98%",
-    backgroundColor: COLORS.secondary,
-    borderRadius: 4,
-  },
-
-  // ── Bottom nav ***
-  bottomNav: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    paddingHorizontal: 8,
-    paddingVertical: 10,
-    paddingBottom: 20,
-    backgroundColor: "rgba(9,20,33,0.85)",
-    borderTopWidth: 1,
-    borderTopColor: COLORS.white10,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-  },
-  navItem: {
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 4,
-    borderRadius: 10,
-  },
-  navItemActive: {
-    backgroundColor: "rgba(0,165,114,0.15)",
-  },
-  navIcon: { fontSize: 20, color: COLORS.outline },
-  navLabel: {
-    fontSize: 10,
-    color: COLORS.outline,
-    marginTop: 3,
-    letterSpacing: 0.5,
-    fontWeight: "500",
   },
 
   // ── States
@@ -689,5 +408,8 @@ const s = StyleSheet.create({
     alignItems: "center",
     gap: 10,
   },
-  loadingText: { fontSize: 14, color: COLORS.outline },
+  loadingText: {
+    fontSize: 14,
+    color: COLORS.outline,
+  },
 });
