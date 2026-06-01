@@ -5,7 +5,6 @@ import { moderateScale } from "react-native-size-matters";
 import Svg, { Path, Circle, Rect, Line, Polyline } from "react-native-svg";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-// Dashboard icon — 4 grid squares
 const DashboardIcon = ({ color }: { color: string }) => (
   <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
     <Rect x="3" y="3" width="7" height="7" rx="1.5" stroke={color} strokeWidth={1.8} />
@@ -15,7 +14,6 @@ const DashboardIcon = ({ color }: { color: string }) => (
   </Svg>
 );
 
-// Anomalies icon — warning triangle with exclamation
 const AnomaliesIcon = ({ color }: { color: string }) => (
   <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
     <Path
@@ -30,7 +28,6 @@ const AnomaliesIcon = ({ color }: { color: string }) => (
   </Svg>
 );
 
-// Simulate icon — science/flask beaker
 const SimulateIcon = ({ color }: { color: string }) => (
   <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
     <Path
@@ -46,7 +43,6 @@ const SimulateIcon = ({ color }: { color: string }) => (
   </Svg>
 );
 
-// History icon — clock with arrow
 const HistoryIcon = ({ color }: { color: string }) => (
   <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
     <Path
@@ -71,8 +67,6 @@ const HistoryIcon = ({ color }: { color: string }) => (
   </Svg>
 );
 
-// Colors matching SafeTransact dark theme
-// secondary = #4edea3 (active), outline = #909096 (inactive)
 const ACTIVE_COLOR = "#4edea3";
 const INACTIVE_COLOR = "#909096";
 
@@ -80,46 +74,11 @@ const TabIcon = ({
   focused,
   icon: Icon,
   title,
-  // isCenter,
 }: {
   focused: boolean;
   icon: React.ComponentType<{ color: string }>;
   title: string;
-  // isCenter?: boolean;
 }) => {
-  // if (isCenter) {
-  //   // Simulate tab: highlighted pill container like the HTML version
-  //   return (
-  //     <View
-  //       style={{
-  //         alignItems: "center",
-  //         justifyContent: "center",
-  //         backgroundColor: focused
-  //           ? "rgba(0, 165, 114, 0.3)"
-  //           : "rgba(0, 165, 114, 0.12)",
-  //         borderRadius: 12,
-  //         paddingHorizontal: 16,
-  //         paddingVertical: 6,
-  //         height: 44,
-  //       }}
-  //     >
-  //       <Icon color={focused ? ACTIVE_COLOR : ACTIVE_COLOR} />
-  //       <Text
-  //         numberOfLines={1}
-  //         style={{
-  //           fontSize: moderateScale(9),
-  //           color: ACTIVE_COLOR,
-  //           fontWeight: focused ? "600" : "400",
-  //           marginTop: 2,
-  //           letterSpacing: 0.05 * moderateScale(9),
-  //         }}
-  //       >
-  //         {title}
-  //       </Text>
-  //     </View>
-  //   );
-  // }
-
   return (
     <View
       style={{
@@ -160,15 +119,15 @@ const _Layout = () => {
           paddingVertical: 0,
         },
         tabBarStyle: {
-          backgroundColor: "rgba(9, 20, 33, 0.85)", // surface/80 = #091421 at 80% opacity
+          // backgroundColor: "rgba(9, 20, 33, 0.85)", 
+          backgroundColor: "#091421",
           borderTopWidth: 1,
-          borderTopColor: "rgba(255, 255, 255, 0.1)",
+          // borderTopColor: "rgba(255, 255, 255, 0.1)",
+          borderTopColor: "rgba(255, 255, 255, 0.06)",
           height: moderateScale(52) + insets.bottom,
           paddingBottom: insets.bottom,
-          // Rounded top corners matching rounded-t-xl
           borderTopLeftRadius: 12,
           borderTopRightRadius: 12,
-          // Shadow matching shadow-[0_-4px_12px_rgba(0,0,0,0.5)]
           shadowColor: "#000",
           shadowOffset: { width: 0, height: -4 },
           shadowOpacity: 0.5,
@@ -207,7 +166,6 @@ const _Layout = () => {
               focused={focused}
               icon={DashboardIcon}
               title="Dashboard"
-              // isCenter
             />
           ),
         }}
