@@ -1,21 +1,34 @@
+// import { da } from "zod/locales";
 import supabase from "../config/supabase.js";
 import { calculateRisk } from "../services/anomalyService.js";
 
 export const getTransactions = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = 10;
+  const limit = parseInt(req.query.limit) || 5;
 
   const from = (page - 1) * limit;
   const to = from + limit - 1;
 
-  const { data, error } = await supabase
+  const { data, error, count } = await supabase
     .from("transactions")
-    .select("*")
+    .select("*", { count: "exact" })
     .range(from, to)
     .order("created_at", { ascending: false });
 
   if (error) return res.status(500).json({ error });
 
+  res.json({ data, total: count });
+};
+
+export const getTransactionCount = async (req, res) => {
+  const { data, error } = await supabase
+    .from("transactions")
+    .select("*");
+  // const { count, error } = await supabase
+  // .select("*", { count: "exact", head: true }); // head:true fetches no rows, just count
+  // res.json({ total: count });
+
+  if (error) return res.status(500).json({ error });
   res.json(data);
 };
 
