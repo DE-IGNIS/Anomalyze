@@ -45,7 +45,7 @@ export default function Simulate() {
 
     try {
       const response = await axios.post(
-        "http://192.168.29.224:3000/api/addTransactions/",
+        "http://192.168.29.224:3000/api/transactions/addTransactions/",
         payload,
         {
           headers: {

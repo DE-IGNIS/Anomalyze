@@ -79,7 +79,7 @@ export default function Dashboard() {
     const fetchTransactionData = async () => {
       try {
         const response = await axios.get(
-          "http://192.168.29.224:3000/api/getTransactionCount"
+          "http://192.168.29.224:3000/api/transactions/getTransactionCount"
         );
         const transactions = response.data;
         const alertCount = transactions.filter(

@@ -174,7 +174,7 @@ function History() {
         setLoading(true);
         setError(null);
         const res = await fetch(
-          `http://192.168.29.224:3000/api/getTransactions?page=${page}&limit=${PAGE_SIZE}`
+          `http://192.168.29.224:3000/api/transactions/getTransactions?page=${page}&limit=${PAGE_SIZE}`
         );
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const json = await res.json();
