@@ -1,11 +1,3 @@
-/**
- * AnomaliesScreen.jsx — React Native (Expo) version
- *
- * To connect Supabase when ready:
- *   1. npm install @supabase/supabase-js
- *   2. Uncomment the Supabase block and remove DUMMY_ALERTS usage
- */
-
 import { useEffect, useState, useCallback } from "react";
 import {
   View,
@@ -15,9 +7,10 @@ import {
   ActivityIndicator,
   StyleSheet,
   StatusBar,
-  SafeAreaView,
 } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { AlertCard } from "../../components/AlertCard";
+
 
 // ─── 🔌 Supabase (uncomment when ready) ─────────────────────────────────────
 // import { createClient } from "@supabase/supabase-js";
@@ -117,60 +110,48 @@ function ErrorBanner({ message, onRetry }) {
   );
 }
 
+
+interface Transaction {
+  id: string | number;
+  status: string;
+  merchant_type: string;
+  amount: number;
+  time?: string;
+}
+
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 export default function Anomaly() {
-  const [alerts, setAlerts] = useState([]);
+  const [alerts, setAlerts] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchAlerts = useCallback(async () => {
-    setLoading(true);
-    setError(null);
     try {
-      // 🧪 Simulate network delay
-      await new Promise(res => setTimeout(res, 600));
+      setLoading(true);
+      setError(null);
 
-      const pending = DUMMY_ALERTS
-        .filter(a => a.status === "pending")
-        .sort((a, b) => b.risk_score - a.risk_score);
+      const res = await fetch(
+        `http://192.168.29.224:3000/api/transactions/alerts`
+      )
 
-      setAlerts(pending);
-    } catch (err) {
-      setError(err.message || "Failed to load alerts.");
-    } finally {
+      if (!res.ok) throw new Error(`HTTP error! status:${res.status}`);
+      const json = await res.json();
+
+      setAlerts(json.data ?? []);
+    }
+    catch (err: any) {
+      setError(err.message);
+      console.log("Fetch error:", err);
+    }
+    finally {
       setLoading(false);
     }
-
-    // ── 🔌 Supabase version (uncomment to use) ────────────────────────────
-    // setLoading(true);
-    // setError(null);
-    // try {
-    //   const { data, error: fetchError } = await supabase
-    //     .from("anomaly_alerts")
-    //     .select("*")
-    //     .eq("status", "pending")
-    //     .order("risk_score", { ascending: false });
-    //   if (fetchError) throw fetchError;
-    //   setAlerts(data || []);
-    // } catch (err) {
-    //   setError(err.message || "Failed to load alerts.");
-    // } finally {
-    //   setLoading(false);
-    // }
   }, []);
 
   useEffect(() => {
     fetchAlerts();
+  }, []);
 
-    // ── 🔌 Supabase real-time (uncomment to use) ──────────────────────────
-    // const channel = supabase
-    //   .channel("anomaly_alerts_changes")
-    //   .on("postgres_changes", { event: "*", schema: "public", table: "anomaly_alerts" }, () => {
-    //     fetchAlerts();
-    //   })
-    //   .subscribe();
-    // return () => supabase.removeChannel(channel);
-  }, [fetchAlerts]);
 
   const handleInvestigate = (alert) => {
     console.log("Investigating:", alert.id);
