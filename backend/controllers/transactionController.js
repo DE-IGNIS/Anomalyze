@@ -1,6 +1,6 @@
-// import { da } from "zod/locales";
 import supabase from "../config/supabase.js";
 import { calculateRisk } from "../services/anomalyService.js";
+import { generateTransactionID } from "../services/transactionIDService.js"
 
 export const getTransactions = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
@@ -59,3 +59,51 @@ export const addTransaction = async (req, res) => {
 
   res.json(data);
 };
+
+export const getAlertTransactions = async (req, res) => {
+  const { data, error } = await supabase
+    .from("transactions")
+    .select("id, amount, device, location, risk_score, created_at, status")
+    .eq("status", "Alert"); // filter only alerts
+
+  if (error) return res.status(500).json({ error });
+
+  const transformedData = data.map(txn => ({
+    transaction_id: generateTransactionID(txn.id),
+    amount: txn.amount,
+    device: txn.device,
+    location: txn.location,
+    risk_score: txn.risk_score,
+    created_at: txn.created_at
+  }));
+
+  console.log(transformedData);
+  res.json({ data: transformedData });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
