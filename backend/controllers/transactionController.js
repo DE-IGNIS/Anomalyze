@@ -64,7 +64,7 @@ export const getAlertTransactions = async (req, res) => {
   const { data, error } = await supabase
     .from("transactions")
     .select("id, amount, device, location, risk_score, created_at, status")
-    .eq("status", "Alert"); // filter only alerts
+    .eq("status", "ALERT"); // filter only alerts
 
   if (error) return res.status(500).json({ error });
 
