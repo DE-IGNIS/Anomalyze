@@ -1,10 +1,3 @@
-/**
- * AlertCard.jsx — React Native (Expo) version
- *
- * Uses only react-native primitives: View, Text, TouchableOpacity, Animated.
- * SVG icons via react-native-svg (expo install react-native-svg).
- */
-
 import { useState, useRef } from "react";
 import {
     View,
@@ -15,14 +8,12 @@ import {
 } from "react-native";
 import Svg, { Path, Circle, Line } from "react-native-svg";
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 function getSeverityColor(score) {
     if (score >= 80) return "#ff4d6d";
     if (score >= 50) return "#f4a261";
     return "#52b788";
 }
 
-// ─── Icons ────────────────────────────────────────────────────────────────────
 function IconTransaction() {
     return (
         <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
@@ -69,7 +60,6 @@ function getIcon(type) {
     }
 }
 
-// ─── RiskBadge ────────────────────────────────────────────────────────────────
 function RiskBadge({ score }) {
     const color = getSeverityColor(score);
     return (
@@ -81,7 +71,6 @@ function RiskBadge({ score }) {
     );
 }
 
-// ─── DetailChip ───────────────────────────────────────────────────────────────
 function DetailChip({ label, value, accent }) {
     return (
         <View style={s.chip}>
@@ -93,9 +82,7 @@ function DetailChip({ label, value, accent }) {
     );
 }
 
-// ─── GlobeVisual ──────────────────────────────────────────────────────────────
 function GlobeVisual({ locationLabel }) {
-    // Static grid lines rendered with react-native-svg
     const hLines = [0, 25, 50, 75, 100];
     const vLines = [0, 14.28, 28.56, 42.84, 57.12, 71.4, 85.68, 100];
 
@@ -123,7 +110,6 @@ function GlobeVisual({ locationLabel }) {
     );
 }
 
-// ─── WarningBanner ────────────────────────────────────────────────────────────
 function WarningBanner({ label, description }) {
     return (
         <View style={s.warning}>
@@ -136,23 +122,6 @@ function WarningBanner({ label, description }) {
     );
 }
 
-// ─── AlertCard ────────────────────────────────────────────────────────────────
-/**
- * Props:
- *   alert: {
- *     id: string,
- *     title: string,
- *     subtitle: string,
- *     type: "transaction" | "location" | "brute_force" | "default",
- *     risk_score: number,          // 0–100
- *     details: Record<string, string>,
- *     warning?: { label: string; description: string },
- *     extra_visual?: "globe",
- *     location_label?: string,
- *   }
- *   onInvestigate: (alert) => void
- *   onDismiss: (alert) => void
- */
 export function AlertCard({ alert, onInvestigate, onDismiss }) {
     const [dismissed, setDismissed] = useState(false);
     const [investigating, setInvest] = useState(false);
@@ -198,7 +167,7 @@ export function AlertCard({ alert, onInvestigate, onDismiss }) {
                             key={k}
                             label={k}
                             value={v}
-                            accent={k === "AMOUNT" ? "#52b788" : k === "IP ADDR" ? "#4cc9f0" : undefined}
+                            accent={k === "AMOUNT" ? "#52b788" : k === "IP_ADDRESS" ? "#4cc9f0" : undefined}
                         />
                     ))}
                 </View>
