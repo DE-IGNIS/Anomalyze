@@ -26,4 +26,15 @@ export const generateTransactionID = (uuid) => {
     return `TXN-${base32}-${checksum}`;
 };
 
-// console.log(generateTransactionID("420b697d-cbd2-43ae-a28e-7bee1b50fe1f"))
+export const formatTimestamp = (isoString) => {
+    const date = new Date(isoString);
+
+    return date.toLocaleString("en-US", {
+        month: "short",   // May
+        day: "numeric",   // 4
+        year: "numeric",  // 2026
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,     // 6:45 PM
+    });
+}
