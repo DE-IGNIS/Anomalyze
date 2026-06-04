@@ -1,6 +1,6 @@
 import supabase from "../config/supabase.js";
 import { calculateRisk } from "../services/anomalyService.js";
-import { generateTransactionID } from "../services/transactionIDService.js"
+import { generateTransactionID, formatTimestamp } from "../services/transactionIDService.js"
 
 export const getTransactions = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
@@ -63,10 +63,12 @@ export const addTransaction = async (req, res) => {
 export const getAlertTransactions = async (req, res) => {
   const { data, error } = await supabase
     .from("transactions")
-    .select("id, amount, device, location, risk_score, created_at, status")
+    .select("id, amount, merchant_type, device, location, status, created_at, risk_score, ip_address")
     .eq("status", "ALERT"); // filter only alerts
 
   if (error) return res.status(500).json({ error });
+
+  // formatTimestamp()
 
   const transformedData = data.map(txn => ({
     transaction_id: generateTransactionID(txn.id),
@@ -74,10 +76,15 @@ export const getAlertTransactions = async (req, res) => {
     device: txn.device,
     location: txn.location,
     risk_score: txn.risk_score,
-    created_at: txn.created_at
+    created_at: formatTimestamp(txn.created_at),
+    merchant_type: txn.merchant_type,
+    ip_address: txn.ip_address,
   }));
 
+  /*
+  Print data while debugging
   console.log(transformedData);
+  */
   res.json({ data: transformedData });
 };
 
