@@ -11,7 +11,6 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import SearchBar from "../../components/SearchBar";
 
-// ─── Theme ────────────────────────────────────────────────────────────────────
 const COLORS = {
   background: "#0A0E17",
   surface: "#111722",
@@ -30,7 +29,6 @@ const COLORS = {
   white10: "rgba(255,255,255,0.10)",
 };
 
-// ─── Types ────────────────────────────────────────────────────────────────────
 type TxStatus = "FLAGGED" | "WARNING" | "APPROVED";
 
 interface Transaction {
@@ -70,8 +68,6 @@ const statusConfig = (status: TxStatus) => {
       };
   }
 };
-
-// ─── Sub-components ───────────────────────────────────────────────────────────
 
 function TableHeader() {
   return (
@@ -160,7 +156,6 @@ function Pagination({
   );
 }
 
-// ─── Main Screen ──────────────────────────────────────────────────────────────
 function History() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -178,7 +173,6 @@ function History() {
         );
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const json = await res.json();
-        // Expects { data: Transaction[], total: number } or plain Transaction[]
         if (Array.isArray(json)) {
           setTransactions(json);
           setTotalPages(Math.ceil(json.length / PAGE_SIZE) || 1);
@@ -215,7 +209,7 @@ function History() {
         </View>
       ) : (
         <FlatList
-          data={[1]} // single-item trick to use FlatList scroll with header/footer
+          data={[1]} 
           keyExtractor={() => "table"}
           contentContainerStyle={s.listContent}
           showsVerticalScrollIndicator={false}
@@ -262,7 +256,6 @@ function History() {
 
 export default History;
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
 const s = StyleSheet.create({
   screen: {
     flex: 1,

@@ -103,8 +103,6 @@ function GlobeVisual({ locationLabel }) {
                 <IconLocation color="#4cc9f0" />
                 <Text style={s.globeText}>{locationLabel || "Unknown Location"}</Text>
             </View>
-
-            {/* Pulse dot (static — use Animated if you want the pulse effect) */}
             <View style={s.pulseDot} />
         </View>
     );
@@ -210,7 +208,6 @@ export function AlertCard({ alert, onInvestigate, onDismiss }) {
     );
 }
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
 const s = StyleSheet.create({
     card: {
         borderRadius: 16,
