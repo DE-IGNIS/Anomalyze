@@ -68,8 +68,6 @@ export const getAlertTransactions = async (req, res) => {
 
   if (error) return res.status(500).json({ error });
 
-  // formatTimestamp()
-
   const transformedData = data.map(txn => ({
     transaction_id: generateTransactionID(txn.id),
     amount: txn.amount,

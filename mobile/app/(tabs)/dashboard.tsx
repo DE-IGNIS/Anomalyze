@@ -64,7 +64,7 @@ function RiskCircle() {
 function StatCard({ label, value, valueColor, icon }) {
   return (
     <View style={s.statCard}>
-    <Ionicons name={icon} size={16} color={C.muted} />
+      <Ionicons name={icon} size={16} color={C.muted} />
       <Text style={s.statLabel}>{label}</Text>
       <Text style={[s.statValue, { color: valueColor }]}>{value}</Text>
     </View>
@@ -100,42 +100,42 @@ export default function Dashboard() {
   }, []);
 
   return (
-<SafeAreaView style={s.safeArea}>
- <StatusBar barStyle="light-content" backgroundColor="#0A0E17" />
+    <SafeAreaView style={s.safeArea}>
+      <StatusBar barStyle="light-content" backgroundColor="#0A0E17" />
 
-    <ScrollView
-      contentContainerStyle={s.container}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Stats */}
-      <View style={s.statsColumn}>
-        <StatCard
-          label="TOTAL TXNS"
-          value={totalTransactions}
-          valueColor={C.onSurface}
-          icon="card-outline"
-        />
-        <StatCard
-          label="AVG RISK"
-          value={0}
-          valueColor={C.green}
-          icon="shield-checkmark-outline"
-        />
-        <StatCard
-          label="ALERTS"
-          value={totalAlerts}
-          valueColor={C.red}
-          icon="warning-outline"
-        />
-      </View>
+      <ScrollView
+        contentContainerStyle={s.container}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Stats */}
+        <View style={s.statsColumn}>
+          <StatCard
+            label="TOTAL TXNS"
+            value={totalTransactions}
+            valueColor={C.onSurface}
+            icon="card-outline"
+          />
+          <StatCard
+            label="AVG RISK"
+            value={0}
+            valueColor={C.green}
+            icon="shield-checkmark-outline"
+          />
+          <StatCard
+            label="ALERTS"
+            value={totalAlerts}
+            valueColor={C.red}
+            icon="warning-outline"
+          />
+        </View>
 
-      {/* Risk */}
-      <View style={s.riskCard}>
-        <Text style={s.riskTitle}>Real-time Risk</Text>
-        <RiskCircle />
-      </View>
-    </ScrollView>
-  </SafeAreaView>
+        {/* Risk */}
+        <View style={s.riskCard}>
+          <Text style={s.riskTitle}>Real-time Risk</Text>
+          <RiskCircle />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
