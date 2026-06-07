@@ -23,13 +23,13 @@ const COLORS = {
   onSurface: "#d9e3f6",
   secondary: "#4edea3",
   onSecondary: "#003824",
-  error: "#ff8fa3",
+  error: "#ed032e",
   tertiary: "#adc6ff",
   white5: "rgba(255,255,255,0.05)",
   white10: "rgba(255,255,255,0.10)",
 };
 
-type TxStatus = "FLAGGED" | "WARNING" | "APPROVED";
+type TxStatus = "ALERT" | "VERIFIED";
 
 interface Transaction {
   id: string | number;
@@ -41,24 +41,16 @@ interface Transaction {
 
 const PAGE_SIZE = 5;
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
 const statusConfig = (status: TxStatus) => {
   switch (status) {
-    case "FLAGGED":
+    case "ALERT":
       return {
         bar: COLORS.error,
         badge: "rgba(255,143,163,0.10)",
         text: COLORS.error,
-        label: "Flagged",
+        label: "Alert",
       };
-    case "WARNING":
-      return {
-        bar: COLORS.tertiary,
-        badge: "rgba(173,198,255,0.10)",
-        text: COLORS.tertiary,
-        label: "Warning",
-      };
-    case "APPROVED":
+    case "VERIFIED":
     default:
       return {
         bar: COLORS.secondary,
@@ -91,7 +83,8 @@ function TransactionRow({ item }: { item: Transaction }) {
             <View style={[s.badge, { backgroundColor: cfg.badge }]}>
               <Text style={[s.badgeText, { color: cfg.text }]}>{cfg.label}</Text>
             </View>
-            <Text style={s.timeText}>{item.time ?? "—"}</Text>
+            {/* time of transaction (broken) */}
+            {/* <Text style={s.timeText}>{item.time ?? "—"}</Text> */}
           </View>
         </View>
       </View>
@@ -121,11 +114,33 @@ function Pagination({
   totalPages: number;
   setPage: (p: number) => void;
 }) {
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  const getPageWindow = (): (number | "…")[] => {
+    const delta = 1;
+    const range: (number | "…")[] = [];
+    const rangeSet = new Set<number>();
+
+    const add = (n: number) => {
+      if (n >= 1 && n <= totalPages) rangeSet.add(n);
+    };
+
+    add(1);
+    add(totalPages);
+    for (let i = page - delta; i <= page + delta; i++) add(i);
+
+    const sorted = Array.from(rangeSet).sort((a, b) => a - b);
+
+    for (let i = 0; i < sorted.length; i++) {
+      if (i > 0 && sorted[i] - sorted[i - 1] > 1) range.push("…");
+      range.push(sorted[i]);
+    }
+
+    return range;
+  };
+
   return (
     <View style={s.paginationBar}>
       <Text style={s.paginationInfo}>
-        Page {page} of {totalPages}
+        Page{page}of{totalPages}
       </Text>
       <View style={s.paginationBtns}>
         <TouchableOpacity
@@ -134,17 +149,25 @@ function Pagination({
         >
           <Text style={s.pageBtnText}>‹</Text>
         </TouchableOpacity>
-        {pages.map((p) => (
-          <TouchableOpacity
-            key={p}
-            style={[s.pageBtn, page === p && s.pageBtnActive]}
-            onPress={() => setPage(p)}
-          >
-            <Text style={[s.pageBtnText, page === p && s.pageBtnTextActive]}>
-              {p}
-            </Text>
-          </TouchableOpacity>
-        ))}
+
+        {getPageWindow().map((p, i) =>
+          p === "…" ? (
+            <View key={`ellipsis-${i}`} style={s.pageBtn}>
+              <Text style={s.pageBtnText}>…</Text>
+            </View>
+          ) : (
+            <TouchableOpacity
+              key={p}
+              style={[s.pageBtn, page === p && s.pageBtnActive]}
+              onPress={() => setPage(p)}
+            >
+              <Text style={[s.pageBtnText, page === p && s.pageBtnTextActive]}>
+                {p}
+              </Text>
+            </TouchableOpacity>
+          )
+        )}
+
         <TouchableOpacity
           style={s.pageBtn}
           onPress={() => setPage(Math.min(totalPages, page + 1))}
@@ -209,7 +232,7 @@ function History() {
         </View>
       ) : (
         <FlatList
-          data={[1]} 
+          data={[1]}
           keyExtractor={() => "table"}
           contentContainerStyle={s.listContent}
           showsVerticalScrollIndicator={false}
@@ -231,9 +254,9 @@ function History() {
             <>
               <SearchBar
                 placeholder="Search merchant, ID or amount…"
-                onPress={() => {}}
+                onPress={() => { }}
                 value=""
-                onChangeText={() => {}}
+                onChangeText={() => { }}
               />
               <View style={{ height: 20 }} />
             </>
