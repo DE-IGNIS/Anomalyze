@@ -1,6 +1,7 @@
 import supabase from "../config/supabase.js";
 import { calculateRisk } from "../services/anomalyService.js";
 import { generateTransactionID, formatTimestamp } from "../services/transactionIDService.js"
+import { generateRandomIP, getRandomLocation } from "../services/mockDataService.js"
 
 export const getTransactions = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
@@ -33,7 +34,10 @@ export const getTransactionCount = async (req, res) => {
 };
 
 export const addTransaction = async (req, res) => {
-  const { user_id, amount, merchant_type, device, location } = req.body;
+  const { user_id, amount, merchant_type, device } = req.body;
+
+  const city = getRandomLocation();
+  const ip = generateRandomIP();
 
   const { risk, status, reason } = calculateRisk({
     amount,
@@ -48,15 +52,17 @@ export const addTransaction = async (req, res) => {
         amount,
         merchant_type,
         device,
-        location,
+        location: city,
         status,
         risk_score: risk,
+        ip_address: ip
       },
     ])
     .select();
 
   if (error) return res.status(500).json({ error });
 
+  // console.log(reason);
   res.json(data);
 };
 
