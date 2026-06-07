@@ -37,10 +37,9 @@ export default function Simulate() {
   const simulateData = async () => {
     const payload = {
       user_id: uuid.v4(),
-      amount,
+      amount : Number(amount),
       merchant_type: merchant,
       device,
-      location: "India"
     };
 
     try {
