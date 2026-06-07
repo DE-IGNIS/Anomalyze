@@ -38,3 +38,4 @@ export const formatTimestamp = (isoString) => {
         hour12: true,     // 6:45 PM
     });
 }
+

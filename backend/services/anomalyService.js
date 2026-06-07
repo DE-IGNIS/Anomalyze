@@ -1,26 +1,3 @@
-// export const calculateRisk = ({ amount, device }) => {
-//   let risk = 0;
-//   let reason = [];
-
-//   if (amount > 50000) {
-//     risk += 50;
-//     reason.push("High amount");
-//   }
-
-//   if (device === "new") {
-//     risk += 30;
-//     reason.push("New device");
-//   }
-
-//   let status = "VERIFIED";
-
-//   if (risk > 70) status = "ALERT";
-//   else if (risk > 40) status = "WARNING";
-
-//   return { risk, status, reason: reason.join(", ") };
-// };
-
-
 export const calculateRisk = ({
   amount,
   device,
@@ -74,15 +51,13 @@ export const calculateRisk = ({
     reasons.push("High frequency (4-6/hour)");
   }
 
-  // FINAL STATUS DETERMINATION
   let status = "VERIFIED";
-  if (risk > 80) status = "ALERT"; // RBI requires immediate review
-  else if (risk > 50) status = "WARNING"; // Manual review needed
+  if (risk > 55) status = "ALERT"; // Manual review needed
 
   return {
     risk,
     status,
-    reason: reasons.join(", ") || "Low risk",
+    // reason: reasons.join(", ") || "Low risk",
     confidence: Math.max(0, 100 - risk) // 0-100% confidence score
   };
 };
