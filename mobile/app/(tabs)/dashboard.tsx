@@ -74,6 +74,7 @@ function StatCard({ label, value, valueColor, icon }) {
 export default function Dashboard() {
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [totalAlerts, setTotalAlerts] = useState(0);
+  const [riskPercent , setRiskPercent] = useState(0);
 
   useEffect(() => {
     const fetchTransactionData = async () => {
@@ -132,6 +133,7 @@ export default function Dashboard() {
         {/* Risk */}
         <View style={s.riskCard}>
           <Text style={s.riskTitle}>Real-time Risk</Text>
+          {/* Pass risk percent prop */}
           <RiskCircle />
         </View>
       </ScrollView>
