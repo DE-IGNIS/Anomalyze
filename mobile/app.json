@@ -4,12 +4,12 @@
     "slug": "anomalyze",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/anomalyze-icon.png",
     "scheme": "anomalyze",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,7 +23,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/anomalyze-icon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
@@ -35,7 +35,7 @@
       "edgeToEdgeEnabled": true
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/anomalyze-icon.png"
     },
     "plugins": ["expo-router"]
   }
