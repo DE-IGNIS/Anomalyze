@@ -26,8 +26,9 @@ const RADIUS = 54;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 const RISK_PERCENT = 26;
 
-function RiskCircle() {
-  const offset = CIRCUMFERENCE - (RISK_PERCENT / 100) * CIRCUMFERENCE;
+
+function RiskCircle({ riskPercent }) {
+  const offset = CIRCUMFERENCE - (riskPercent / 100) * CIRCUMFERENCE;
   return (
     <View style={s.riskCircleWrap}>
       <Svg width={140} height={140}>
@@ -47,14 +48,14 @@ function RiskCircle() {
             fill="none"
             stroke={C.green}
             strokeWidth={10}
-            strokeDasharray={`${CIRCUMFERENCE}`}
+            strokeDasharray={CIRCUMFERENCE}
             strokeDashoffset={offset}
             strokeLinecap="round"
           />
         </G>
       </Svg>
       <View style={s.riskCenterText}>
-        <Text style={s.riskPct}>{RISK_PERCENT}%</Text>
+        <Text style={s.riskPct}>{Math.round(riskPercent)}%</Text>
         <Text style={s.riskSub}>GLOBAL INDEX</Text>
       </View>
     </View>
@@ -74,7 +75,7 @@ function StatCard({ label, value, valueColor, icon }) {
 export default function Dashboard() {
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [totalAlerts, setTotalAlerts] = useState(0);
-  const [riskPercent , setRiskPercent] = useState(0);
+  const [riskPercent, setRiskPercent] = useState(0);
 
   useEffect(() => {
     const fetchTransactionData = async () => {
@@ -90,11 +91,16 @@ export default function Dashboard() {
         setTotalTransactions(transactions.length);
         setTotalAlerts(alertCount);
 
+        const index =
+          transactions.length > 0
+            ? (alertCount / transactions.length) * 100 : 0;
+        setRiskPercent(index);
+
         console.info(
           `Processed | Total: ${transactions.length} | Alerts: ${alertCount}`
         );
       } catch (err) {
-        console.error("FETCH FAILED", err.message);
+        console.error("FETCH FAILED", err);
       }
     };
     fetchTransactionData();
@@ -132,9 +138,9 @@ export default function Dashboard() {
 
         {/* Risk */}
         <View style={s.riskCard}>
-          <Text style={s.riskTitle}>Real-time Risk</Text>
+          <Text style={s.riskTitle}>Global Risk Score</Text>
           {/* Pass risk percent prop */}
-          <RiskCircle />
+          <RiskCircle riskPercent={riskPercent} />
         </View>
       </ScrollView>
     </SafeAreaView>
