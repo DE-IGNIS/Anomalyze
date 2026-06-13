@@ -115,6 +115,3 @@ export const getAlertTransactions = async (req, res) => {
 
 
 
-
-
-
