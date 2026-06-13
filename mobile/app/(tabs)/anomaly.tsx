@@ -7,6 +7,8 @@ import {
   StyleSheet,
   StatusBar,
   Alert,
+  Modal,
+  Pressable,
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AlertCard } from "../../components/AlertCard";
@@ -79,11 +81,6 @@ function toAlertCardShape(t: Transaction) {
       DEVICE: t.device ?? "Unknown",
       IP_ADDRESS: t.ip_address ?? "N/A",
       LOCATION: t.location ?? "Unknown",
-      /*
-      We have alerdy displayed risk score on top right 
-      RISK_SCORE: `${t.risk_score}/100`,
-      STATUS: String(t.status ?? "unknown").toUpperCase(),
-      */
     },
     warning: null,
     extra_visual: null,
@@ -96,6 +93,8 @@ export default function Anomaly() {
   const [alerts, setAlerts] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedTxn, setSelectedTxn] = useState<Transaction | null>(null);
+  const [investigate, setInvestigate] = useState(false);
 
   const fetchAlerts = useCallback(async () => {
     try {
@@ -127,7 +126,14 @@ export default function Anomaly() {
 
   const handleInvestigate = useCallback((alert) => {
     console.log("Investigating:", alert.id);
-  }, []);
+
+    const originalTxn = alerts.find(
+      (t) => String(t.transaction_id) === alert.id
+    );
+
+    setSelectedTxn(originalTxn || null);
+    setInvestigate(true);
+  }, [alerts]);
 
   const handleDismiss = useCallback((alert) => {
     Alert.alert(
@@ -190,6 +196,83 @@ export default function Anomaly() {
           ))
         )}
       </ScrollView>
+
+
+      {selectedTxn && (
+        <>
+          <Modal transparent visible={investigate} animationType="fade">
+            <View style={s.overlay}>
+              <View style={s.modalContainer}>
+
+                {/* Transaction Metadata */}
+                <Text style={s.title}>Transaction Metadata</Text>
+
+                <Text style={s.amount}>₹{Number(selectedTxn?.amount || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}</Text>
+
+                <View style={s.row}>
+                  <View style={s.col}>
+                    <Text style={s.label}>MERCHANT</Text>
+                    <Text style={s.value}>{selectedTxn?.merchant_type || "Unknown"}</Text>
+                  </View>
+
+                  <View style={s.col}>
+                    <Text style={s.label}>TIMESTAMP</Text>
+                    <Text style={s.value}>{selectedTxn?.created_at || "N/A"}</Text>
+                  </View>
+                </View>
+
+                <View style={s.row}>
+                  <View style={s.col}>
+                    <Text style={s.label}>IP ADDRESS</Text>
+                    <Text style={s.value}>{selectedTxn?.ip_address || "N/A"}</Text>
+                  </View>
+
+                  <View style={s.col}>
+                    <Text style={s.label}>DEVICE</Text>
+                    <Text style={s.value}>{selectedTxn?.device || "Unknown"}</Text>
+                  </View>
+                </View>
+
+                <Text style={s.encryption}>
+                  🔒 All Data Encrypted: Bank-Grade AES-256
+                </Text>
+
+                {/* Divider */}
+                <View style={s.divider2} />
+
+                {/* Security Insights */}
+                <View style={s.insightHeader}>
+                  <Text style={s.insightTitle}>Security Insights</Text>
+                  <Text style={s.badge}>AI RECOMMENDATION</Text>
+                </View>
+
+                <Text style={s.insightText}>
+                  This transaction deviates significantly from the user's historical
+                  spend pattern. High probability of session hijacking detected due to
+                  abrupt geographic shift within a 15-minute window.
+                </Text>
+
+                {/* Actions */}
+                <Pressable style={s.btnDanger}>
+                  <Text style={s.btnTextDanger}>Escalate Case</Text>
+                </Pressable>
+
+                <Pressable style={s.btnSuccess}>
+                  <Text style={s.btnTextSuccess}>Verify with User</Text>
+                </Pressable>
+
+                <Pressable onPress={() => {
+                  setInvestigate(false);
+                  setSelectedTxn(null);
+                }} style={s.btnGhost}>
+                  <Text style={s.btnTextGhost}>Dismiss</Text>
+                </Pressable>
+
+              </View>
+            </View>
+          </Modal>
+        </>
+      )}
     </SafeAreaView>
   );
 }
@@ -342,5 +425,138 @@ const s = StyleSheet.create({
     flex: 1,
     height: 38,
     borderRadius: 10,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  modalContainer: {
+    width: "90%",
+    backgroundColor: "#0f172a",
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: "#1e293b",
+  },
+
+  title: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#e2e8f0",
+    marginBottom: 12,
+  },
+
+  amount: {
+    fontSize: 26,
+    fontWeight: "700",
+    color: "#34d399",
+    marginBottom: 16,
+  },
+
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 14,
+  },
+
+  col: {
+    width: "48%",
+  },
+
+  label: {
+    fontSize: 10,
+    color: "#94a3b8",
+    marginBottom: 4,
+    letterSpacing: 1,
+  },
+
+  value: {
+    fontSize: 13,
+    color: "#e2e8f0",
+    fontWeight: "500",
+  },
+
+  encryption: {
+    fontSize: 12,
+    color: "#34d399",
+    marginTop: 8,
+  },
+
+  divider2: {
+    height: 1,
+    backgroundColor: "#1e293b",
+    marginVertical: 16,
+  },
+
+  insightHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  insightTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#e2e8f0",
+  },
+
+  badge: {
+    fontSize: 10,
+    color: "#34d399",
+    backgroundColor: "#064e3b",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    overflow: "hidden",
+  },
+
+  insightText: {
+    fontSize: 13,
+    color: "#94a3b8",
+    marginTop: 10,
+    lineHeight: 18,
+  },
+
+  btnDanger: {
+    backgroundColor: "#fca5a5",
+    padding: 14,
+    borderRadius: 10,
+    marginTop: 16,
+    alignItems: "center",
+  },
+
+  btnTextDanger: {
+    color: "#7f1d1d",
+    fontWeight: "600",
+  },
+
+  btnSuccess: {
+    backgroundColor: "#34d399",
+    padding: 14,
+    borderRadius: 10,
+    marginTop: 10,
+    alignItems: "center",
+  },
+
+  btnTextSuccess: {
+    color: "#064e3b",
+    fontWeight: "600",
+  },
+
+  btnGhost: {
+    borderWidth: 1,
+    borderColor: "#334155",
+    padding: 14,
+    borderRadius: 10,
+    marginTop: 10,
+    alignItems: "center",
+  },
+
+  btnTextGhost: {
+    color: "#cbd5f5",
+    fontWeight: "500",
   },
 });
