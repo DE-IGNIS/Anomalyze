@@ -1,4 +1,4 @@
-# Demo
+<!-- # Demo
 
 ## Overview
 
@@ -33,5 +33,41 @@ A quick visual walkthrough of the application.
 ## Screen 5
 
 ![History 5](./history.jpg)
+
+--- -->
+
+## Overview
+
+A quick visual walkthrough of the application.
+
+---
+
+## Screen 1
+
+<img src="./simulateScreen.jpg" width="300"/>
+
+---
+
+## Screen 2
+
+<img src="./anomalyScreen.jpg" width="300"/>
+
+---
+
+## Screen 3
+
+<img src="./investigate.png" width="300"/>
+
+---
+
+## Screen 4
+
+<img src="./dashboard.jpg" width="300"/>
+
+---
+
+## Screen 5
+
+<img src="./history.jpg" width="300"/>
 
 ---
