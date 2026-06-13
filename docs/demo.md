@@ -8,58 +8,30 @@ A quick visual walkthrough of the application.
 
 ## Screen 1
 
-![Screen 1](./screen1.png)
+![Simulate Transaction](./simulateScreen.jpg)
 
 ---
 
 ## Screen 2
 
-![Screen 2](./screen2.png)
+![Anomalies Screen](./anomalyScreen.jpg)
 
 ---
 
 ## Screen 3
 
-![Screen 3](./screen3.png)
+![Investigate Alert](./investigate.png)
 
 ---
 
 ## Screen 4
 
-![Screen 4](./screen4.png)
+![Dashboard](./dashboard.jpg)
 
 ---
 
 ## Screen 5
 
-![Screen 5](./screen5.png)
+![History 5](./history.jpg)
 
 ---
-
-## Screen 6
-
-![Screen 6](./screen6.png)
-
----
-
-## Screen 7
-
-![Screen 7](./screen7.png)
-
----
-
-## Screen 8
-
-![Screen 8](./screen8.png)
-
----
-
-## Screen 9
-
-![Screen 9](./screen9.png)
-
----
-
-## Screen 10
-
-![Screen 10](./screen10.png)
