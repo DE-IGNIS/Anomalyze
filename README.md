@@ -45,10 +45,10 @@ It is designed with scalability, clarity, and decision support in mind making it
 
 ## :rocket: Tech Stack
 
-Languages: TypeScript  
+Languages: TypeScript, JavaScript
 Frameworks/Libraries: React Native, Node.js, Expo  
 Database: Supabase  
-Cloud & DevOps: Expo EAS (Build & Deployment), UptimeRobot (Monitoring)
+Cloud & DevOps: Expo EAS (Build & Deployment)
 
 ---
 
@@ -56,11 +56,10 @@ Cloud & DevOps: Expo EAS (Build & Deployment), UptimeRobot (Monitoring)
 
 Before starting, ensure you have the following installed:
 
-- Git
 - Node.js
-- Yarn or npm
+- npm
 - Expo 
-
+- Android device
 ---
 
 ## ⚙️ Installation & Setup
@@ -97,17 +96,12 @@ npm run dev
 
 ---
 
-## :gear: Architecture
-
----
-
 ## :chart_with_upwards_trend: Future Scope
 
-* [ ] AI/ML-based anomaly detection beyond rule-based systems
+* [ ] AI insights provided while investigating
+* [ ] Global search bar to access past transaction reports
+* [ ] Role based access control and audit logs for enterprise-level usage
 * [ ] Integration with banking APIs and external financial data providers
-* [ ] Real-time alerts and notification system
-* [ ] Analytics and trends dashboard for data visualization
-* [ ] Role-based access control for enterprise-level usage
 
 ---
 
