@@ -102,6 +102,7 @@ npm run dev
 * [ ] Global search bar to access past transaction reports
 * [ ] Role based access control and audit logs for enterprise-level usage
 * [ ] Integration with banking APIs and external financial data providers
+* [ ] Import bulk data from a CSV file and update database
 
 ---
 
